@@ -14,6 +14,8 @@ define([
   'bootstrap'
 ], function($, _, Parse, Handlebars, Router, Animate, ContactsTemplate, ContactsCollection, ContactModel, Bootstrap){
   var ContactsView = Parse.View.extend({
+    // Compile the template only once
+    template: Handlebars.compile(ContactsTemplate),
 
     el: $('#container'),
 
@@ -41,10 +43,9 @@ define([
 
     render: function(collection){
       var contacts = {contact: collection.toJSON()};
-      var template = Handlebars.compile(ContactsTemplate);
 
-      var compiledTemplate = template(contacts);
-      Animate.slideIn(this.el, compiledTemplate);
+      var content = this.template(contacts);
+      Animate.slideIn(this.el, content);
     },
 
     newContact: function (e) {
